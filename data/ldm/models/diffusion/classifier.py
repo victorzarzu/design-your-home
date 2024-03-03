@@ -223,6 +223,8 @@ class NoisyLatentImageClassifier(pl.LightningModule):
         if self.use_scheduler:
             scheduler = instantiate_from_config(self.scheduler_config)
 
+
+            print('schedule_config2', self.scheduler_config)
             print("Setting up LambdaLR scheduler...")
             scheduler = [
                 {

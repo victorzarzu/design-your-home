@@ -625,7 +625,8 @@ if __name__ == "__main__":
         else:
             logger_cfg = OmegaConf.create()
         logger_cfg = OmegaConf.merge(default_logger_cfg, logger_cfg)
-        print(logger_cfg)
+        logger_cfg['params']['id'] = logger_cfg['params']['name'] = 'logs_train_default'
+        print('cfg', logger_cfg)
         trainer_kwargs["logger"] = instantiate_from_config(logger_cfg)
 
         # modelcheckpoint - use TrainResult/EvalResult(checkpoint_on=metric) to
@@ -760,20 +761,19 @@ if __name__ == "__main__":
                 ckpt_path = os.path.join(ckptdir, "last.ckpt")
                 trainer.save_checkpoint(ckpt_path)
 
-
         def divein(*args, **kwargs):
             if trainer.global_rank == 0:
                 import pudb;
                 pudb.set_trace()
 
 
-        import signal
+        #import signal
 
         #signal.signal(signal.SIGBREAK, melk)
         #signal.signal(signal.CTRL_BREAK_EVENT, divein)
 
-        signal.signal(signal.SIGUSR1, melk)
-        signal.signal(signal.SIGUSR2, divein)
+        #signal.signal(signal.SIGUSR1, melk)
+        #signal.signal(signal.SIGUSR2, divein)
 
         # run
         if opt.train:

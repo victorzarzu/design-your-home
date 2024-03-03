@@ -26,6 +26,7 @@ sys.path.append("./stable_diffusion")
 from ldm.data.base import Txt2ImgIterableBaseDataset
 from ldm.util import instantiate_from_config
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def get_parser(**parser_kwargs):
     def str2bool(v):
@@ -533,6 +534,7 @@ if __name__ == "__main__":
     #               key: value
 
     now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
+    os.environ["PL_TORCH_DISTRIBUTED_BACKEND"] = "gloo"
 
     # add cwd for convenience and to make classes in this file available when
     # running as `python main.py`
@@ -625,6 +627,7 @@ if __name__ == "__main__":
         else:
             logger_cfg = OmegaConf.create()
         logger_cfg = OmegaConf.merge(default_logger_cfg, logger_cfg)
+        logger_cfg['params']['id'] = logger_cfg['params']['name'] = 'logs_train_default'
         trainer_kwargs["logger"] = instantiate_from_config(logger_cfg)
 
         # modelcheckpoint - use TrainResult/EvalResult(checkpoint_on=metric) to
@@ -730,10 +733,11 @@ if __name__ == "__main__":
 
         # configure learning rate
         bs, base_lr = config.data.params.batch_size, config.model.base_learning_rate
-        if not cpu:
+        """if not cpu:
             ngpu = len(lightning_config.trainer.gpus.strip(",").split(','))
         else:
-            ngpu = 1
+            ngpu = 1"""
+        ngpu=1
         if 'accumulate_grad_batches' in lightning_config.trainer:
             accumulate_grad_batches = lightning_config.trainer.accumulate_grad_batches
         else:
@@ -768,8 +772,8 @@ if __name__ == "__main__":
 
         import signal
 
-        signal.signal(signal.SIGUSR1, melk)
-        signal.signal(signal.SIGUSR2, divein)
+        #signal.signal(signal.SIGUSR1, melk)
+        #signal.signal(signal.SIGUSR2, divein)
 
         # run
         if opt.train:

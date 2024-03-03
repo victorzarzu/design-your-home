@@ -7,6 +7,7 @@ from taming.modules.vqvae.quantize import VectorQuantizer2 as VectorQuantizer
 
 from ldm.modules.diffusionmodules.model import Encoder, Decoder
 from ldm.modules.distributions.distributions import DiagonalGaussianDistribution
+from torch.optim.lr_scheduler import LambdaLR, ReduceLROnPlateau
 
 from ldm.util import instantiate_from_config
 
@@ -209,6 +210,7 @@ class VQModel(pl.LightningModule):
                                     lr=lr_d, betas=(0.5, 0.9))
 
         if self.scheduler_config is not None:
+            print('schedule_config1', self.scheduler_config)
             scheduler = instantiate_from_config(self.scheduler_config)
 
             print("Setting up LambdaLR scheduler...")

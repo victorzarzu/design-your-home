@@ -1372,6 +1372,7 @@ class LatentDiffusion(DDPM):
             assert 'target' in self.scheduler_config
             scheduler = instantiate_from_config(self.scheduler_config)
 
+            print('schedule_config4', self.scheduler_config)
             print("Setting up LambdaLR scheduler...")
             scheduler = [
                 {
