@@ -25,10 +25,10 @@ def design():
     img_byte_array = io.BytesIO()
     transposed_image.save(img_byte_array, format='JPEG')
 
-    filepath = './da.jpeg'
+    #filepath = './da.jpeg'
     
     # Save the image
-    transposed_image.save(filepath, format='JPEG')
+    #transposed_image.save(filepath, format='JPEG')
     
     img_byte_array.seek(0)
     return send_file(img_byte_array, mimetype='image/jpeg')

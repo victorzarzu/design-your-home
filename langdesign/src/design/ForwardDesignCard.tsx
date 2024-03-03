@@ -8,9 +8,9 @@ export interface HistoryDesignProps {
 
 export const ForwardDesignCard: React.FC<HistoryDesignProps> = ({imageUrl, prompt, onClick}) => {    
     return (
-        <span className="forward-design-card" onClick={() => onClick()}>
+        <div className="forward-design-card" onClick={() => onClick()}>
             <img className="forward-design-card-image" src={imageUrl}/> 
-            <p>{prompt}</p>
-        </span>
+            <div className="forward-card-prompt-area"><p>{prompt}</p></div>
+        </div>
     );
 };

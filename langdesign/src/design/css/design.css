@@ -4,6 +4,10 @@
     right: 20px;
 }
 
+.sign-out-button:hover {
+    border-color: transparent
+}
+
 .design {
     margin: auto;
     display: flex;

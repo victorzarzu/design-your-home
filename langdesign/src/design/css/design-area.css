@@ -29,16 +29,17 @@
     font: inherit;
     min-height: 48px;
     min-width: 48px;
-    margin-left: 10px;
+    margin-left: 1.5em;
 }
 
 .prompt-area {
     position: absolute;
     bottom: 1em;
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 }
 
 .prompt-input {
@@ -46,13 +47,12 @@
     min-height: 1em; 
     line-height: 2.5em; 
     border-radius: 16px; 
-    width: 100%;
+    width: 80%;
     font-size: 1em;
 }
 
-.prompt-input:hover {
-    background-color: grey;
-    border-color: grey;
+.prompt-input:focus {
+    outline: none;
 }
 
 .main-design {
@@ -73,12 +73,10 @@
 }
 
 .current-image-area {
-    max-width: 65%;
-    max-height: 65%;
-    position: absolute;
+    width: 80%;
+    height: 80%;
     display: flex;
-    top: 10em;
-    right: 4em;
+    justify-content: center;
     align-items: center;
 }
 
@@ -86,6 +84,8 @@
     display: flex;
     flex-direction: row;
     position: absolute; 
+    justify-content: center;
+    align-items: center;
     top: 0;
     right: 0;
     width: 80%;
@@ -111,15 +111,56 @@
     right: 4em;
 }
 
+.toolbar-title {
+    position: absolute;
+    left: 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    align-content: center;
+    width: 75%;
+}
+
 .toolbar-button {
     margin-left: 0.5em;
 }
 
 #design-title {
     color: grey;
-    position: absolute;
-    left: 1em;
     font-size: 2.5em;
+    width: 100%;
+    overflow-y: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+}
+
+.design-title {
+    max-width: 50%;
+}
+
+#design-title-button {
+    background-color: transparent;
+    border-color: transparent;
+    color: black;
+    font-size: 1.25em;
+    height: 100%;
+}
+
+#design-title-button:focus  {
+    outline: none;
+}
+
+#design-title-input {
+    font-size: 2.5em;
+    width: 50%;
+    background-color: transparent;
+    color: grey;
+    font-weight: bold;
+}
+
+#design-title-input:focus {
+    outline: none;
 }
 
 .design-list-element {
@@ -134,6 +175,7 @@
     align-items: center;
     justify-content: center;
     background-color: black;
+    z-index: 100;
 }
 
 #start-new-button:hover {
@@ -161,10 +203,23 @@
     height: 2.5em;
     width: 95%;
     margin-left: 0.5em;
+    overflow: hidden;
+}
+
+.history-design::after {
+    content: ""; 
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 15%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)); 
 }
 
 .history-design-content {
     margin-left: 1em;
+    position: relative;
+    overflow-y: hidden;
 }
 
 .history-design:hover {
@@ -173,31 +228,71 @@
     cursor: pointer;
 }
 
-.next-design-area {
-    z-index: 100;
+.forward-design-area {
+    z-index: 1;
     background-color: black;
-    display: flex;
+    overflow-y: hidden;
+    display: flex; 
     flex-direction: column;
-    overflow-x: scroll;
+    flex-wrap: wrap;
 }
 
 .forward-design-card {
+    flex: 0 0 calc(25% - 2vw);
+    margin: 1vw;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
+    height: 25vh;
 }
 
-.forward-design-card:hover {
-    background-color: grey;
+.forward-card-prompt-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 5%;
+}
+
+.forward-design-card-image {
+    width: 80%;
+    height: 80%;
+    position: relative;
+    top: 0;
+    border: 5px solid transparent;
+}
+
+.forward-design-card-image:hover {
+    border-color: grey;
+    border-width: 5px;
+    border-style: solid;
     cursor: pointer;
 }
 
-.toolbar-next-design-area {
+.toolbar-forward-design-area {
     display: flex;
     justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 5%;
 }
 
-#close-next-design-area-button {
+.forward-area {
+    height: 95%;
+    width: 100%;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+}
+
+#close-forward-design-area-button {
     background-color: transparent;
     border-color: transparent;
+}
+
+#close-forward-design-area-button:focus {
+    outline: none;
 }
