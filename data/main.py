@@ -28,6 +28,20 @@ from ldm.util import instantiate_from_config
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+class SaveAfterEpochCallback(pl.Callback):
+    def __init__(self, ckptdir):
+        super().__init__()
+        self.ckptdir = ckptdir
+
+    def melk(self, trainer):
+        if trainer.global_rank == 0:
+            print("Summoning checkpoint.")
+            ckpt_path = os.path.join(self.ckptdir, "fine_last.ckpt")
+            trainer.save_checkpoint(ckpt_path)
+
+    def on_epoch_end(self, trainer, pl_module):
+        self.melk(trainer)
+
 def get_parser(**parser_kwargs):
     def str2bool(v):
         if isinstance(v, bool):
@@ -551,7 +565,8 @@ if __name__ == "__main__":
     cfg_name = os.path.splitext(cfg_fname)[0]
     nowname = f"{cfg_name}_{opt.name}"
     logdir = os.path.join(opt.logdir, nowname)
-    ckpt = os.path.join(logdir, "checkpoints", "last.ckpt")
+    ckpt = os.path.join(logdir, "checkpoints", "fine_last.ckpt")
+    #ckpt = os.path.join("checkpoints", "instruct-pix2pix-00-22000.ckpt")
     resume = False
 
     if os.path.isfile(ckpt):
@@ -760,7 +775,7 @@ if __name__ == "__main__":
             # run all checkpoint hooks
             if trainer.global_rank == 0:
                 print("Summoning checkpoint.")
-                ckpt_path = os.path.join(ckptdir, "last.ckpt")
+                ckpt_path = os.path.join(ckptdir, "fine_last.ckpt")
                 trainer.save_checkpoint(ckpt_path)
 
 
@@ -774,6 +789,9 @@ if __name__ == "__main__":
 
         #signal.signal(signal.SIGUSR1, melk)
         #signal.signal(signal.SIGUSR2, divein)
+
+        save_after_epoch = SaveAfterEpochCallback(ckptdir)
+        trainer.callbacks.append(save_after_epoch)
 
         # run
         if opt.train:

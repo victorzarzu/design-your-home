@@ -493,7 +493,7 @@ class LatentDiffusion(DDPM):
 
         self.restarted_from_ckpt = False
         if ckpt_path is not None:
-            self.init_from_ckpt(ckpt_path, ignore_keys)
+            self.init_from_ckpt(ckpt_path, ignore_keys, only_model=True)
             self.restarted_from_ckpt = True
 
             if self.use_ema and not load_ema:
